@@ -6,7 +6,7 @@
   <link href="https://llurry.github.io/atom.xml" rel="self"/>
   
   <link href="https://llurry.github.io/"/>
-  <updated>2025-06-03T12:36:42.870Z</updated>
+  <updated>2025-06-04T04:55:07.577Z</updated>
   <id>https://llurry.github.io/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JQCTF wp</title>
+    <link href="https://llurry.github.io/2025/06/04/JQCTF-wp/"/>
+    <id>https://llurry.github.io/2025/06/04/JQCTF-wp/</id>
+    <published>2025-06-04T03:43:12.000Z</published>
+    <updated>2025-06-04T04:55:07.577Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="re复现"><a href="#re复现" class="headerlink" title="re复现"></a>re复现</h1><p>Customize Virtual Machine<br>这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现了它。<br><img src="/image/example.png" alt="输入长度50，构造关键逻辑在这里，此处是取输入的字符与一组密文进行异或，func_len中所存的即是每一组密文的长度，而func_data即是所存储的函数（加密之后的），那么就是一个smc了，input只要能满足正常解密出所有的函数逻辑即可"><br><img src="/images/re.png" alt="使用解密出的函数做后面的约束"><br>然后这里有点卡了，看了别人的wp后才懂了，只要能fuzz出那个满足正常异或出函数逻辑的输入即可，单字节的一个爆破，翻看一下待解密的模块，找到一点小技巧，0异或一个字节是那个字节本身，那么正确的字节是0的话异或目标字节就会是那个字节，就像下面这块，有连续的z出现，那么目标字节大概率就是z<br><img src="/images/ree.jpg" alt="输入z之后修一下，成功修复，找一下规律，每个函数最后的retn就是最好的标志"><br>写个脚本fuzz一下，retn对应的字节码是c3,手动替换一下bytes_array<br><img src="/images/image.png" alt="脚本"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;re复现&quot;&gt;&lt;a href=&quot;#re复现&quot; class=&quot;headerlink&quot; title=&quot;re复现&quot;&gt;&lt;/a&gt;re复现&lt;/h1&gt;&lt;p&gt;Customize Virtual Machine&lt;br&gt;这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Hello World</title>
