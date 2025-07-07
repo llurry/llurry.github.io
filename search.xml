@@ -3,31 +3,25 @@
   <entry>
     <title>JQCTF wp</title>
     <url>/2025/06/04/JQCTF-wp/</url>
-    <content><![CDATA[<h1 id="re复现"><a href="#re复现" class="headerlink" title="re复现"></a>re复现</h1><p>Customize Virtual Machine<br>这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现了它。<br><img src="/image/example.png" alt="输入长度50，构造关键逻辑在这里，此处是取输入的字符与一组密文进行异或，func_len中所存的即是每一组密文的长度，而func_data即是所存储的函数（加密之后的），那么就是一个smc了，input只要能满足正常解密出所有的函数逻辑即可"><br><img src="/images/re.png" alt="使用解密出的函数做后面的约束"><br>然后这里有点卡了，看了别人的wp后才懂了，只要能fuzz出那个满足正常异或出函数逻辑的输入即可，单字节的一个爆破，翻看一下待解密的模块，找到一点小技巧，0异或一个字节是那个字节本身，那么正确的字节是0的话异或目标字节就会是那个字节，就像下面这块，有连续的z出现，那么目标字节大概率就是z<br><img src="/images/ree.jpg" alt="输入z之后修一下，成功修复，找一下规律，每个函数最后的retn就是最好的标志"><br>写个脚本fuzz一下，retn对应的字节码是c3,手动替换一下bytes_array<br><img src="/images/image.png" alt="脚本"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2025/06/03/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <content><![CDATA[<ul>
+<li><a href="#customize-vm">第一题 Writeup</a></li>
+<li><a href="#drillbeam">第二题 Writeup</a></li>
+</ul>
+<h1 id="JQCTF-re复现"><a href="#JQCTF-re复现" class="headerlink" title="JQCTF re复现"></a>JQCTF re复现</h1><h2 id="第一题-writeup-customize-vm"><a href="#第一题-writeup-customize-vm" class="headerlink" title="第一题-writeup-customize-vm"></a>第一题-writeup-customize-vm</h2><p>这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现了它。</p>
+<p>输入长度50，构造关键逻辑在这里，此处是取输入的字符与一组密文进行异或，func_len中所存的即是每一组密文的长度，而\func_data即是所存储的函数（加密之后的），那么就是一个smc了，input只要能满足正常解密出所有的函数逻辑即可<br><img src="/images/example.png" alt="example.png"></p>
+<p>使用解密出的函数做后面的约束<br><img src="/images/re.png" alt="re.png"><br>然后这里有点卡了，看了别人的wp后才懂了，只要能fuzz出那个满足正常异或出函数逻辑的输入即可，单字节的一个爆破，翻看一下待解密的模块，找到一点小技巧，0异或一个字节是那个字节本身，那么正确的字节是0的话异或目标字节就会是那个字节，就像下面这块，有连续的z出现，那么目标字节大概率就是z。</p>
+<p>输入z之后修一下，成功修复，找一下规律，每个函数最后的retn就是最好的标志<br><img src="/images/ree.jpg" alt="ree.jpg"></p>
+<p>写个脚本fuzz一下，retn对应的字节码是c3,手动替换一下bytes_array。</p>
+<p>脚本</p>
+<figure class="highlight py"><table><tr><td class="code"><pre><span class="line">bytes_array = [</span><br><span class="line"><span class="number">0x90</span>, <span class="number">0xFB</span>, <span class="number">0xF1</span>, <span class="number">0x17</span>, <span class="number">0x89</span>, <span class="number">0x89</span>, <span class="number">0x89</span>, <span class="number">0xF5</span>, <span class="number">0x86</span>, <span class="number">0x7D</span>,</span><br><span class="line"><span class="number">0xF5</span>, <span class="number">0xB6</span>, <span class="number">0x73</span>, <span class="number">0xB5</span></span><br><span class="line">]</span><br><span class="line">last_byte = bytes_array[-<span class="number">1</span>]</span><br><span class="line">target = <span class="number">0xC3</span></span><br><span class="line">xor_char = last_byte ^ target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查是否在 0-9, a-z, _ 范围内</span></span><br><span class="line"><span class="keyword">if</span> (<span class="number">48</span> &lt;= xor_char &lt;= <span class="number">57</span>) <span class="keyword">or</span> (<span class="number">97</span> &lt;= xor_char &lt;= <span class="number">122</span>) <span class="keyword">or</span> (xor_char == <span class="number">95</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;找到的异或字符: &#x27;<span class="subst">&#123;<span class="built_in">chr</span>(xor_char)&#125;</span>&#x27;&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;没有找到符合条件的异或字符。&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>跳转测试<br><a href="#第一题-writeup-customize-vm">第一题</a></p>
+<h2 id="第二题-Writeup-drillbeam"><a href="#第二题-Writeup-drillbeam" class="headerlink" title="第二题 Writeup #drillbeam"></a>第二题 Writeup #drillbeam</h2><p>这道题主要涉及安卓逆向</p>
 ]]></content>
       <categories>
-        <category>分类1</category>
-        <category>分类2</category>
-        <category>分类3</category>
+        <category>wp</category>
       </categories>
       <tags>
-        <tag>标签1</tag>
-        <tag>标签2</tag>
-        <tag>标签3</tag>
+        <tag>re</tag>
       </tags>
   </entry>
 </search>
