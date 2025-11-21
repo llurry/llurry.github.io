@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>llurry</title>
   
-  <subtitle>菜鸟日记</subtitle>
+  <subtitle>blog</subtitle>
   <link href="https://llurry.github.io/atom.xml" rel="self"/>
   
   <link href="https://llurry.github.io/"/>
