@@ -1,0 +1,131 @@
+/* 引入 Font Awesome 6 顶级图标库 */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
+
+/* 强制 Font Awesome 图标生效，覆盖主题自带的旧字体 */
+i.fa-solid {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+}
+i.fa-regular {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 400 !important;
+}
+i.fa-brands {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+}
+
+/* 1. 降低独立页面（如归档页、关于页）的封面高度 */
+.nexmoe-post .nexmoe-post-cover {
+    padding-bottom: 35% !important; /* 这里原来是 45%，改小一点高度就降下来了，你可以自由微调 */
+}
+
+/* 2. 保持首页文章封面的大图比例不受影响 */
+.nexmoe-index .nexmoe-post .nexmoe-post-cover {
+    padding-bottom: 35% !important; 
+}
+
+/* 3. 修复其他文章里“版权声明”板块在深色模式下的刺眼白底 */
+.nexmoe-post-copyright {
+    background-color: rgba(255, 255, 255, 0.05) !important; /* 改为半透明暗色底 */
+    border-color: rgba(255, 255, 255, 0.1) !important;      /* 边框变暗 */
+    box-shadow: none !important;                            /* 去掉发光阴影 */
+}
+/* 让版权块里的文字适配深色模式 */
+.nexmoe-post-copyright * {
+    color: var(--color-text-main) !important;
+}
+/* ====================================================================
+   Atom One Dark Theme for Highlight.js
+   强行覆盖默认代码块样式
+==================================================================== */
+.hljs {
+  color: #abb2bf !important;
+  background: #282c34 !important;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #5c6370 !important;
+  font-style: italic !important;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #c678dd !important;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e06c75 !important;
+}
+
+.hljs-literal {
+  color: #56b6c2 !important;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string {
+  color: #98c379 !important;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #d19a66 !important;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #61aeee !important;
+}
+
+.hljs-built_in,
+.hljs-title.class_,
+.hljs-class .hljs-title {
+  color: #e6c07b !important;
+}
+
+.hljs-emphasis {
+  font-style: italic !important;
+}
+
+.hljs-strong {
+  font-weight: bold !important;
+}
+
+.hljs-link {
+  text-decoration: underline !important;
+}
+
+/* 调整代码块整体背景和行号颜色，融入暗黑主题 */
+figure.highlight {
+  background: #282c34 !important;
+  border-radius: 8px !important;
+}
+
+figure.highlight table {
+  margin: 0 !important;
+}
+
+figure.highlight .gutter {
+  background: #21252b !important;
+  color: #4b5363 !important;
+  border-right: 1px solid #3b4048 !important;
+}

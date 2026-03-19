@@ -1,345 +1,368 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  <title>python,js,c-JQCTF wp | llurry</title>
+<!doctype html>
+<html lang="zh"><head>
+<title>JQCTF wp - llurry&#39;s blog</title>
+<meta charset="UTF-8">
+<meta name="keywords" content="python,js,c">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 
-  <!-- keywords -->
-  
-    <meta name="keywords" content="python,js,c">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="第一题 Writeup  JQCTF re复现第一题-writeup-customize-vm这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现了它。 输入长度50，构造关键逻辑在这里，此处是取输入的字符与一组密文进行异或，func_len中所存的即是每一组密文的长度，而\func_data即是所存储的函数（加密之后的），那么就是一个smc了，input只要能满足正常解密出所有的">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<meta name="description" content="第一题 Writeup  JQCTF re复现第一题-writeup-customize-vm这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现了它。 输入长度50，构造关键逻辑在这里，此处是取输入的字符与一组密文进行异或，func_len中所存的即是每一组密文的长度，而\func_data即是所存储的函数（加密之后的），那么就是一个smc了，input只要能满足正常解密出所有的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JQCTF wp">
 <meta property="og:url" content="https://llurry.github.io/2025/06/04/JQCTF-wp/index.html">
-<meta property="og:site_name" content="llurry">
+<meta property="og:site_name" content="llurry&#39;s blog">
 <meta property="og:description" content="第一题 Writeup  JQCTF re复现第一题-writeup-customize-vm这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现了它。 输入长度50，构造关键逻辑在这里，此处是取输入的字符与一组密文进行异或，func_len中所存的即是每一组密文的长度，而\func_data即是所存储的函数（加密之后的），那么就是一个smc了，input只要能满足正常解密出所有的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://llurry.github.io/images/example.png">
 <meta property="og:image" content="https://llurry.github.io/images/re.png">
 <meta property="og:image" content="https://llurry.github.io/images/ree.jpg">
 <meta property="article:published_time" content="2025-06-04T03:43:12.000Z">
-<meta property="article:modified_time" content="2025-11-20T12:48:54.821Z">
+<meta property="article:modified_time" content="2026-03-13T03:50:39.579Z">
 <meta property="article:author" content="llurry">
 <meta property="article:tag" content="re">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://llurry.github.io/images/example.png">
-  
-    <link rel="alternative" href="/atom.xml" title="llurry" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/img/favicon.png">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
 
-  
-  
-
-  
-<script src="//cdn.bootcss.com/require.js/2.3.2/require.min.js"></script>
-
-  
-<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/lib/fancybox/fancybox.css">
+<link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-  
-<meta name="generator" content="Hexo 7.3.0"></head>
-<body>
-  <div id="container">
-    <div id="particles-js"></div>
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img lazy-src="/img/avatar.png" class="js-avatar">
-			
-		</a>
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1773918439550">
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/"></a></h1>
-		</hgroup>
+<link rel="stylesheet" href="/css/style.css?v=1773918439550">
 
-		
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						
-					</ul>
-				</div>
-			</div>
-		
 
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/categories">分类</a></li>
-				        
-							<li><a href="/tags">标签</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/llurry" title="github">github</a>
-					        
-								<a class="zhihu" target="_blank" href="https://zhihu.com/people/blurry" title="zhihu">zhihu</a>
-					        
-								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/re/" style="font-size: 10px;">re</a> <a href="/tags/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/" style="font-size: 10px;">安卓逆向</a> <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">逆向工程</a>
-					</div>
-				</section>
-				
-				
-				
 
-				
-			</div>
-		</div>
-	</header>				
-</div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide"></h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img lazy-src="/img/avatar.png" class="js-avatar">
-			</div>
-			<hgroup>
-			  <h1 class="header-author"></h1>
-			</hgroup>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/categories">分类</a></li>
-		        
-					<li><a href="/tags">标签</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/llurry" title="github">github</a>
-			        
-						<a class="zhihu" target="_blank" href="https://zhihu.com/people/blurry" title="zhihu">zhihu</a>
-			        
-						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
-</nav>
-      <div class="body-wrap"><article id="post-JQCTF-wp" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2025/06/04/JQCTF-wp/" class="article-date">
-  	<time datetime="2025-06-04T03:43:12.000Z" itemprop="datePublished">2025-06-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
     
-      <input type="hidden" class="isFancy" />
+        <link rel="stylesheet" href="/custom.css?v=1773918439550">
     
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      JQCTF wp
-      
-    </h1>
-  
-
-      </header>
-      
-      <div class="article-info article-info-post">
-        
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/re/" rel="tag">re</a></li></ul>
-	</div>
-
-        
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/wp/">wp</a>
-	</div>
 
 
-        
-        <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ul>
-<li><a href="#customize-vm">第一题 Writeup</a></li>
-</ul>
-<h1 id="JQCTF-re复现"><a href="#JQCTF-re复现" class="headerlink" title="JQCTF re复现"></a>JQCTF re复现</h1><h2 id="第一题-writeup-customize-vm"><a href="#第一题-writeup-customize-vm" class="headerlink" title="第一题-writeup-customize-vm"></a>第一题-writeup-customize-vm</h2><p>这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现了它。</p>
-<p>输入长度50，构造关键逻辑在这里，此处是取输入的字符与一组密文进行异或，func_len中所存的即是每一组密文的长度，而\func_data即是所存储的函数（加密之后的），那么就是一个smc了，input只要能满足正常解密出所有的函数逻辑即可<br><img src="/images/example.png" alt="example.png"></p>
-<p>使用解密出的函数做后面的约束<br><img src="/images/re.png" alt="re.png"><br>然后这里有点卡了，看了别人的wp后才懂了，只要能fuzz出那个满足正常异或出函数逻辑的输入即可，单字节的一个爆破，翻看一下待解密的模块，找到一点小技巧，0异或一个字节是那个字节本身，那么正确的字节是0的话异或目标字节就会是那个字节，就像下面这块，有连续的z出现，那么目标字节大概率就是z。</p>
-<p>输入z之后修一下，成功修复，找一下规律，每个函数最后的retn就是最好的标志<br><img src="/images/ree.jpg" alt="ree.jpg"></p>
-<p>写个脚本fuzz一下，retn对应的字节码是c3,手动替换一下bytes_array。</p>
-<p>脚本</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">bytes_array = [</span><br><span class="line"><span class="number">0x90</span>, <span class="number">0xFB</span>, <span class="number">0xF1</span>, <span class="number">0x17</span>, <span class="number">0x89</span>, <span class="number">0x89</span>, <span class="number">0x89</span>, <span class="number">0xF5</span>, <span class="number">0x86</span>, <span class="number">0x7D</span>,</span><br><span class="line"><span class="number">0xF5</span>, <span class="number">0xB6</span>, <span class="number">0x73</span>, <span class="number">0xB5</span></span><br><span class="line">]</span><br><span class="line">last_byte = bytes_array[-<span class="number">1</span>]</span><br><span class="line">target = <span class="number">0xC3</span></span><br><span class="line">xor_char = last_byte ^ target</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查是否在 0-9, a-z, _ 范围内</span></span><br><span class="line"><span class="keyword">if</span> (<span class="number">48</span> &lt;= xor_char &lt;= <span class="number">57</span>) <span class="keyword">or</span> (<span class="number">97</span> &lt;= xor_char &lt;= <span class="number">122</span>) <span class="keyword">or</span> (xor_char == <span class="number">95</span>):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;找到的异或字符: &#x27;<span class="subst">&#123;<span class="built_in">chr</span>(xor_char)&#125;</span>&#x27;&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;没有找到符合条件的异或字符。&quot;</span>)</span><br></pre></td></tr></table></figure>
-<p>跳转测试<br><a href="#第一题-writeup-customize-vm">第一题</a></p>
 
-      
-    </div>
-    
-  </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2025/07/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E4%B8%A4%E9%81%93%E9%A2%98%E7%9B%AE%E7%9A%84wp/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">&lt;</strong>
-      <div class="article-nav-title">
-        
-          安卓逆向两道题目的解析
-        
-      </div>
-    </a>
-  
-  
-</nav>
-
-  
-</article>
+<script src="/lib/mdui_043tiny/mdui.js" async></script>
+<script src="/lib/fancybox/fancybox.umd.js" async></script>
+<script src="/lib/lax.min.js" async></script>
 
 
-<div class="ds-share share" data-thread-key="JQCTF-wp" data-title="JQCTF wp" data-url="https://llurry.github.io/2025/06/04/JQCTF-wp/"  data-images="/img/avatar.png" data-content="JQCTF wp">
-    <div class="ds-share-inline">
-      <ul  class="ds-share-icons-16">
-      	<li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
-        <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
-        <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
-        <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
-        <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
-      </ul>
-      <div class="ds-share-icons-more">
-      </div>
-    </div>
- </div>
+<script async src="/js/app.js?v=1773918439550"></script>
+
  
 
 
 
-
-
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-      <div class="footer-left">
-        &copy; 2025 llurry
-      </div>
-        <div class="footer-right">
-          <a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/smackgg/hexo-theme-smackdown" target="_blank">Smackdown</a>
-        </div>
+<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="llurry's blog" type="application/atom+xml">
+</head><body class="nexmoe mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image: url(/images/bp.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"><a class="mdui-btn mdui-btn-icon mdui-ripple" mdui-drawer="{target: &#039;#drawer&#039;, swipe: true}" title="menu"><i class="mdui-icon nexmoefont icon-menu"></i></a><div class="mdui-toolbar-spacer"></div><a class="mdui-btn mdui-btn-icon" href="/" title="llurry"><img src="/images/avatar.png" alt="llurry"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer">
+    <div class="nexmoe-avatar mdui-ripple">
+        <a href="/" title="llurry">
+            <img src="/images/avatar.png" alt="llurry" alt="llurry">
+        </a>
     </div>
-  </div>
-</footer>
+    <div class="nexmoe-count">
+        <div><span>文章</span>4</div>
+        <div><span>标签</span>4</div>
+        <div><span>分类</span>2</div>
+    </div>
+    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/" title="回到首页">
+            <i class="mdui-list-item-icon nexmoefont fa-solid fa-house"></i>
+            <div class="mdui-list-item-content">
+                回到首页
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/archive/" title="文章归档">
+            <i class="mdui-list-item-icon nexmoefont fa-solid fa-box-archive"></i>
+            <div class="mdui-list-item-content">
+                文章归档
+            </div>
+        </a>
+        
+        <a class="nexmoe-list-item mdui-list-item mdui-ripple false" href="/about/" title="关于本人">
+            <i class="mdui-list-item-icon nexmoefont fa-solid fa-user"></i>
+            <div class="mdui-list-item-content">
+                关于本人
+            </div>
+        </a>
+        
     </div>
     
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-
-
-<script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: true,
-		animate: true,
-		isHome: false,
-		isPost: true,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false
-	}
-</script>
-
-<script src="/js/main.js"></script>
+    
+        
+        <div class="nexmoe-widget-wrap">
+    <div class="nexmoe-widget nexmoe-search">
+         
+            <form id="search_form" action_e="https://cn.bing.com/search?q=site:nexmoe.com" onsubmit="return search();">
+                <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
+            </form>
+         
+    </div>
+</div>
 
 
 
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-});
+    
+        
+        <div class="nexmoe-widget-wrap">
+	<div class="nexmoe-widget nexmoe-social">
+		<a
+			class="mdui-ripple"
+			href="https://space.bilibili.com/3546719916656810"
+			target="_blank"
+			mdui-tooltip="{content: '哔哩哔哩'}"
+			style="
+				color: rgb(231, 106, 141);
+				background-color: rgba(231, 106, 141, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-bilibili"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://github.com/llurry/"
+			target="_blank"
+			mdui-tooltip="{content: 'GitHub'}"
+			style="
+				color: rgb(25, 23, 23);
+				background-color: rgba(25, 23, 23, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-github"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="https://www.zhihu.com/people/currrry-91"
+			target="_blank"
+			mdui-tooltip="{content: '知乎'}"
+			style="
+				color: rgb(30, 136, 229);
+				background-color: rgba(30, 136, 229, .1);
+			"
+		>
+			<i
+				class="nexmoefont icon-zhihu"
+			></i> </a
+		><a
+			class="mdui-ripple"
+			href="mailto:huifuhuif@gmail.com"
+			target="_blank"
+			mdui-tooltip="{content: 'Mail'}"
+			style="
+				color: rgb(85, 172, 238);
+				background-color: rgba(85, 172, 238, .1);
+			"
+		>
+			<i
+				class="nexmoefont fa-regular fa-envelope"
+			></i> </a
+		>
+	</div>
+</div>
 
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
-</script>
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章分类</h3>
+    <div class="nexmoe-widget">
 
-<script src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js"></script>
+      <ul class="category-list">
+
+        
 
 
+        
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/Android/">Android</a>
+          <span class="category-list-count">1</span>
+        </li>
+
+        
+
+        <li class="category-list-item">
+          <a class="category-list-link" href="/categories/wp/">wp</a>
+          <span class="category-list-count">3</span>
+        </li>
+
+        
+      </ul>
+
+    </div>
   </div>
-</body>
-</html>
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
+      <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/re/" style="font-size: 20px;">re</a> <a href="/tags/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/" style="font-size: 10px;">安卓逆向</a> <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">逆向工程</a>
+    </div>
+    
+      <script>
+        var maxTagcloud = parseInt(17);
+        var tags_length = parseInt(4);
+        var tags_arr = [];
+        for(var i = 0; i < tags_length; i++){
+          tags_arr.push(i);
+        }
+        tags_arr.sort(function (l, r) {
+          return Math.random() > 0.5 ? -1 : 1;
+        });
+        tags_arr = tags_arr.slice(0, maxTagcloud < tags_length ? tags_length - maxTagcloud : 0);
+        for(var tag_i = 0; tag_i < tags_arr.length; tag_i++){
+          document.getElementById("randomtagcloud").children[tags_arr[tag_i]].style.display = 'none';
+        }
+      </script>
+    
+  </div>
+
+    
+        
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">文章归档</h3>
+    <div class="nexmoe-widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/">2026</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+
+    
+        
+        
+  <div class="nexmoe-widget-wrap">
+    <h3 class="nexmoe-widget-title">最新文章</h3>
+    <div class="nexmoe-widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/03/16/2026%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E8%B5%9Bwp/">2026 CCSSSC Reverse Writeup</a>
+          </li>
+        
+          <li>
+            <a href="/2025/11/26/GeekCTF%202025/">GeekCTF 2025</a>
+          </li>
+        
+          <li>
+            <a href="/2025/07/28/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E9%A2%98%E7%9B%AE%E7%9A%84wp/">一道安卓逆向题目的解析</a>
+          </li>
+        
+          <li>
+            <a href="/2025/06/04/JQCTF-wp/">JQCTF wp</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+    
+        
+   
+    <div class="nexmoe-copyright">
+        &copy; 2026 llurry
+        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
+        
+    </div>
+</div><!-- .nexmoe-drawer --></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post">
+  <article>
+    
+        <div class="nexmoe-post-cover absolute" style="padding-top: NaN%;"> 
+            <img src="/images/jqctf-cover.jpg" alt="JQCTF wp" loading="lazy">
+            <h1>JQCTF wp</h1>
+        </div>
+    
+    
+    <div class="nexmoe-post-meta">
+    <div class="nexmoe-rainbow">
+        <a class="nexmoefont icon-calendar-fill">2025年06月04日</a>
+        
+            <a class="nexmoefont icon-appstore-fill -link" href="/categories/wp/">wp</a>
+        
+        
+    </div>
+    
+    
+    
+    
+    
+</div>
+
+    <ul>
+<li><a href="#customize-vm">第一题 Writeup</a></li>
+</ul>
+<h1 id="JQCTF-re复现"><a href="#JQCTF-re复现" class="headerlink" title="JQCTF re复现"></a>JQCTF re复现</h1><h2 id="第一题-writeup-customize-vm"><a href="#第一题-writeup-customize-vm" class="headerlink" title="第一题-writeup-customize-vm"></a>第一题-writeup-customize-vm</h2><p>这个比赛对我来说还是比较难的，re里这道题稍微简单一点，所以先复现了它。</p>
+<p>输入长度50，构造关键逻辑在这里，此处是取输入的字符与一组密文进行异或，func_len中所存的即是每一组密文的长度，而\func_data即是所存储的函数（加密之后的），那么就是一个smc了，input只要能满足正常解密出所有的函数逻辑即可<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/images/example.png" alt="example.png" data-caption="example.png" loading="lazy"></p>
+<p>使用解密出的函数做后面的约束<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/images/re.png" alt="re.png" data-caption="re.png" loading="lazy"><br>然后这里有点卡了，看了别人的wp后才懂了，只要能fuzz出那个满足正常异或出函数逻辑的输入即可，单字节的一个爆破，翻看一下待解密的模块，找到一点小技巧，0异或一个字节是那个字节本身，那么正确的字节是0的话异或目标字节就会是那个字节，就像下面这块，有连续的z出现，那么目标字节大概率就是z。</p>
+<p>输入z之后修一下，成功修复，找一下规律，每个函数最后的retn就是最好的标志<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/images/ree.jpg" alt="ree.jpg" data-caption="ree.jpg" loading="lazy"></p>
+<p>写个脚本fuzz一下，retn对应的字节码是c3,手动替换一下bytes_array。</p>
+<p>脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 定义字节数组</span><br>bytes_array = [<br>    <span class="hljs-number">0x90</span>, <span class="hljs-number">0xFB</span>, <span class="hljs-number">0xF1</span>, <span class="hljs-number">0x17</span>, <span class="hljs-number">0x89</span>, <span class="hljs-number">0x89</span>, <span class="hljs-number">0x89</span>, <span class="hljs-number">0xF5</span>, <span class="hljs-number">0x86</span>, <span class="hljs-number">0x7D</span>,<br>    <span class="hljs-number">0xF5</span>, <span class="hljs-number">0xB6</span>, <span class="hljs-number">0x73</span>, <span class="hljs-number">0xB5</span><br>]<br><br><span class="hljs-comment"># 获取最后一个字节并与目标值进行异或运算</span><br>last_byte = bytes_array[-<span class="hljs-number">1</span>]<br>target = <span class="hljs-number">0xC3</span><br>xor_char = last_byte ^ target<br><br><span class="hljs-comment"># 检查计算结果是否在 [0-9], [a-z], _ 范围内</span><br>is_number = (<span class="hljs-number">48</span> &lt;= xor_char &lt;= <span class="hljs-number">57</span>)<br>is_lowercase = (<span class="hljs-number">97</span> &lt;= xor_char &lt;= <span class="hljs-number">122</span>)<br>is_underscore = (xor_char == <span class="hljs-number">95</span>)<br><br><span class="hljs-keyword">if</span> is_number <span class="hljs-keyword">or</span> is_lowercase <span class="hljs-keyword">or</span> is_underscore:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;找到的异或字符: &#x27;<span class="hljs-subst">&#123;<span class="hljs-built_in">chr</span>(xor_char)&#125;</span>&#x27;&quot;</span>)<br><span class="hljs-keyword">else</span>:<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;没有找到符合条件的异或字符。&quot;</span>)<br></code></pre></td></tr></table></figure>
+<p>跳转测试<br><a href="#第一题-writeup-customize-vm">第一题</a></p>
+
+    <p style="text-align: center; color: #999;">— END —</p>
+
+  </article>
+
+  
+      
+    <div class="nexmoe-post-copyright">
+        <strong>本文作者：</strong>llurry<br>
+        <strong>本文链接：</strong><a href="https://llurry.github.io/2025/06/04/JQCTF-wp/" title="https:&#x2F;&#x2F;llurry.github.io&#x2F;2025&#x2F;06&#x2F;04&#x2F;JQCTF-wp&#x2F;" target="_blank" rel="noopener">https:&#x2F;&#x2F;llurry.github.io&#x2F;2025&#x2F;06&#x2F;04&#x2F;JQCTF-wp&#x2F;</a><br>
+        
+            <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
+
+        
+    </div>
+
+
+  
+  
+  <div class="nexmoe-post-meta nexmoe-rainbow">
+   
+    
+        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/re/" rel="tag">re</a>
+    
+</div>
+  
+  
+    <script async src="/js/copy-codeblock.js?v=1773918439531"></script>
+  
+
+  
+      <div class="nexmoe-post-footer">
+          
+      </div>
+  
+</div></div><div class="nexmoe-post-right">    <div class="nexmoe-fixed">
+        <div class="nexmoe-tool">
+
+            
+
+            
+            
+            <button class="mdui-fab catalog" style="overflow:unset;">
+                <i class="nexmoefont icon-i-catalog"></i>
+                <div class="nexmoe-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#JQCTF-re%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">JQCTF re复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%A2%98-writeup-customize-vm"><span class="toc-number">1.1.</span> <span class="toc-text">第一题-writeup-customize-vm</span></a></li></ol></li></ol>
+                </div>
+            </button>
+            
+
+            
+
+            <a href="#nexmoe-content" class="backtop toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
+        </div>
+    </div>
+</div></div><div id="nexmoe-footer"><!--!--></div><div id="nexmoe-search-space"><div class="search-container"><div class="search-header"><div class="search-input-container"><input class="search-input" type="text" placeholder="搜索" onInput="sinput();"></div><a class="search-close" onclick="sclose();">×</a></div><div class="search-body"></div></div></div><div></div></body></html>
