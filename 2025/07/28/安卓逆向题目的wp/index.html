@@ -13,30 +13,30 @@
 <meta property="og:site_name" content="llurry&#39;s blog">
 <meta property="og:description" content="在这篇博客中，我将分享我在安卓逆向学习过程中遇到的一道题目，并记录下我的分析思路与解题过程。 题目一：3-火焰风暴思路这道题目需要用Frida来强制移动应用程序的一个函数工作来获得密码，然后在strings.xml文件中找到一个Firebase配置，再用密码和电子邮件对firebase数据库进行身份验证 这里的Password() 方法从 strings.xml 中获取多个字符串资源并对这些字符串">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://llurry.github.io/images/android.png">
-<meta property="og:image" content="https://llurry.github.io/images/password.png">
+<meta property="og:image" content="https://llurry.github.io/images/jieti/android.png">
+<meta property="og:image" content="https://llurry.github.io/images/jieti/password.png">
 <meta property="article:published_time" content="2025-07-28T06:12:11.000Z">
-<meta property="article:modified_time" content="2026-03-13T03:50:06.456Z">
+<meta property="article:modified_time" content="2026-03-20T01:39:35.962Z">
 <meta property="article:author" content="llurry">
 <meta property="article:tag" content="逆向工程">
 <meta property="article:tag" content="CTF">
 <meta property="article:tag" content="安卓逆向">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://llurry.github.io/images/android.png">
+<meta name="twitter:image" content="https://llurry.github.io/images/jieti/android.png">
 
 <link rel="stylesheet" href="/lib/fancybox/fancybox.css">
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1773918439547">
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1773975922075">
 
-<link rel="stylesheet" href="/css/style.css?v=1773918439547">
+<link rel="stylesheet" href="/css/style.css?v=1773975922075">
 
 
 
 
     
-        <link rel="stylesheet" href="/custom.css?v=1773918439547">
+        <link rel="stylesheet" href="/custom.css?v=1773975922075">
     
 
 
@@ -46,7 +46,7 @@
 <script src="/lib/lax.min.js" async></script>
 
 
-<script async src="/js/app.js?v=1773918439547"></script>
+<script async src="/js/app.js?v=1773975922075"></script>
 
  
 
@@ -61,8 +61,8 @@
         </a>
     </div>
     <div class="nexmoe-count">
-        <div><span>文章</span>4</div>
-        <div><span>标签</span>4</div>
+        <div><span>文章</span>5</div>
+        <div><span>标签</span>5</div>
         <div><span>分类</span>2</div>
     </div>
     <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
@@ -190,7 +190,7 @@
 
         <li class="category-list-item">
           <a class="category-list-link" href="/categories/wp/">wp</a>
-          <span class="category-list-count">3</span>
+          <span class="category-list-count">4</span>
         </li>
 
         
@@ -205,12 +205,12 @@
         
   <div class="nexmoe-widget-wrap">
     <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/re/" style="font-size: 20px;">re</a> <a href="/tags/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/" style="font-size: 10px;">安卓逆向</a> <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">逆向工程</a>
+      <a href="/tags/CTF/" style="font-size: 10px;">CTF</a> <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/re/" style="font-size: 20px;">re</a> <a href="/tags/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91/" style="font-size: 10px;">安卓逆向</a> <a href="/tags/%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B/" style="font-size: 10px;">逆向工程</a>
     </div>
     
       <script>
         var maxTagcloud = parseInt(17);
-        var tags_length = parseInt(4);
+        var tags_length = parseInt(5);
         var tags_arr = [];
         for(var i = 0; i < tags_length; i++){
           tags_arr.push(i);
@@ -233,7 +233,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/">2026</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/">2026</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/">2025</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -249,6 +249,10 @@
         
           <li>
             <a href="/2026/03/16/2026%E8%BD%AF%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E8%B5%9Bwp/">2026 CCSSSC Reverse Writeup</a>
+          </li>
+        
+          <li>
+            <a href="/2025/12/30/2025ciscn%E5%88%9D%E8%B5%9B/">2025ciscn初赛</a>
           </li>
         
           <li>
@@ -302,10 +306,10 @@
 
     <p>在这篇博客中，我将分享我在安卓逆向学习过程中遇到的一道题目，并记录下我的分析思路与解题过程。</p>
 <h2 id="题目一：3-火焰风暴"><a href="#题目一：3-火焰风暴" class="headerlink" title="题目一：3-火焰风暴"></a>题目一：3-火焰风暴</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>这道题目需要用Frida来强制移动应用程序的一个函数工作来获得密码，然后在strings.xml文件中找到一个Firebase配置，再用密码和电子邮件对firebase数据库进行身份验证</p>
-<p>这里的Password() 方法从 strings.xml 中获取多个字符串资源并对这些字符串进行子串截取并拼接成一个新的字符串。 将拼接后的字符串传递给 native 方法 generateRandomString() 进行处理。最终返回处理后的结果。看了wp后才知道该函数来自本机库“firestorm”。<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/images/android.png" alt="android.png" data-caption="android.png" loading="lazy"></p>
+<p>这里的Password() 方法从 strings.xml 中获取多个字符串资源并对这些字符串进行子串截取并拼接成一个新的字符串。 将拼接后的字符串传递给 native 方法 generateRandomString() 进行处理。最终返回处理后的结果。看了wp后才知道该函数来自本机库“firestorm”。<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/images/jieti/android.png" alt="android.png" data-caption="android.png" loading="lazy"></p>
 <p>在AI的帮助下先写好JS代码，使它强制执行 Password 函数，然后打印该函数的结果。</p>
 <p>脚本<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Java</span>.<span class="hljs-title function_">perform</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">getPassword</span>(<span class="hljs-params"></span>) &#123;<br>        <span class="hljs-title class_">Java</span>.<span class="hljs-title function_">choose</span>(<span class="hljs-string">&#x27;com.pwnsec.firestorm.MainActivity&#x27;</span>, &#123;<br>            <span class="hljs-attr">onMatch</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params">instance</span>) &#123;<br>                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;MainActivity instance found: &quot;</span> + instance);<br>                <span class="hljs-keyword">try</span> &#123;<br>                    <span class="hljs-keyword">var</span> pass = instance.<span class="hljs-title class_">Password</span>();<br>                    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;FireBase Password: &quot;</span> + pass);<br>                &#125; <span class="hljs-keyword">catch</span> (e) &#123;<br>                    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Error occurred: &quot;</span> + e);<br>                &#125;<br>            &#125;,<br>            <span class="hljs-attr">onComplete</span>: <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>                <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Search completed. Exiting script.&quot;</span>);<br><br>            &#125;<br>        &#125;);<br>    &#125;<br><br>    <span class="hljs-comment">// Delay execution to ensure the app is fully started</span><br>    <span class="hljs-built_in">setTimeout</span>(getPassword, <span class="hljs-number">4000</span>); <span class="hljs-comment">// Adjust the delay as needed (4000 ms = 4 seconds)</span><br></code></pre></td></tr></table></figure></p>
-<p>终于搞到密码了，这里我的模拟器有点问题，搞了很久才搞好。<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/images/password.png" alt="password.png" data-caption="password.png" loading="lazy"></p>
+<p>终于搞到密码了，这里我的模拟器有点问题，搞了很久才搞好。<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/images/jieti/password.png" alt="password.png" data-caption="password.png" loading="lazy"></p>
 <p>得到了密码后密码将用于向 Firebase 数据库进行身份验证，firebase 配置可以在“strings.xml”文件中找到。</p>
 <p>找到了firebase 配置和 firebase 电子邮件后现在需要使用电子邮件和密码向 Firebase 数据库进行身份验证。</p>
 <p>得到flag: PWNSEC{C0ngr4ts<em>Th4t_w45_4N_345y_P4$$w 0rd_t0_G3t!!_0R</em>！5_！t???}</p>
@@ -337,7 +341,7 @@
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1773918439531"></script>
+    <script async src="/js/copy-codeblock.js?v=1773975922033"></script>
   
 
   
