@@ -28,15 +28,15 @@
 <link rel="stylesheet" href="/lib/mdui_043tiny/mdui.css">
 
 
-<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1774160996916">
+<link rel="stylesheet" href="/lib/iconfont/iconfont.css?v=1774161909373">
 
-<link rel="stylesheet" href="/css/style.css?v=1774160996916">
+<link rel="stylesheet" href="/css/style.css?v=1774161909373">
 
 
 
 
     
-        <link rel="stylesheet" href="/custom.css?v=1774160996916">
+        <link rel="stylesheet" href="/custom.css?v=1774161909373">
     
 
 
@@ -46,7 +46,7 @@
 <script src="/lib/lax.min.js" async></script>
 
 
-<script async src="/js/app.js?v=1774160996916"></script>
+<script async src="/js/app.js?v=1774161909373"></script>
 
  
 
@@ -304,9 +304,6 @@
     
 </div>
 
-    <div class="nexmoe-post-meta" style="margin: 10px 0!important; text-align: center; color: #888;">
-        <a><i class="fa-solid fa-eye"></i> 本文浏览 <span id="busuanzi_value_page_pv"></span> 次</a>
-    </div>
     <p>在这篇博客中，我将分享我在安卓逆向学习过程中遇到的一道题目，并记录下我的分析思路与解题过程。</p>
 <h2 id="题目一：3-火焰风暴"><a href="#题目一：3-火焰风暴" class="headerlink" title="题目一：3-火焰风暴"></a>题目一：3-火焰风暴</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>这道题目需要用Frida来强制移动应用程序的一个函数工作来获得密码，然后在strings.xml文件中找到一个Firebase配置，再用密码和电子邮件对firebase数据库进行身份验证</p>
 <p>这里的Password() 方法从 strings.xml 中获取多个字符串资源并对这些字符串进行子串截取并拼接成一个新的字符串。 将拼接后的字符串传递给 native 方法 generateRandomString() 进行处理。最终返回处理后的结果。看了wp后才知道该函数来自本机库“firestorm”。<br><img onerror="imgOnError(this);" data-fancybox="gallery" src="/images/jieti/android.png" alt="android.png" data-caption="android.png" loading="lazy"></p>
@@ -344,7 +341,7 @@
 </div>
   
   
-    <script async src="/js/copy-codeblock.js?v=1774160996882"></script>
+    <script async src="/js/copy-codeblock.js?v=1774161909358"></script>
   
 
   
@@ -372,4 +369,4 @@
             <a href="#nexmoe-content" class="backtop toc-link" aria-label="Back To Top" title="top"><button class="mdui-fab mdui-ripple"><i class="nexmoefont icon-caret-top"></i></button></a>
         </div>
     </div>
-</div></div><div id="nexmoe-footer"><!--!--></div><div id="nexmoe-search-space"><div class="search-container"><div class="search-header"><div class="search-input-container"><input class="search-input" type="text" placeholder="搜索" onInput="sinput();"></div><a class="search-close" onclick="sclose();">×</a></div><div class="search-body"></div></div></div><div></div><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></body></html>
+</div></div><div id="nexmoe-footer"><!--!--></div><div id="nexmoe-search-space"><div class="search-container"><div class="search-header"><div class="search-input-container"><input class="search-input" type="text" placeholder="搜索" onInput="sinput();"></div><a class="search-close" onclick="sclose();">×</a></div><div class="search-body"></div></div></div><div></div></body></html>
