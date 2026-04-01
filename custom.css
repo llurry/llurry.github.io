@@ -1,6 +1,27 @@
 /* 引入 Font Awesome 6 顶级图标库 */
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css");
 
+/* 强制 Nexmoe 始终使用浅色配色，不跟随系统深色模式 */
+:root {
+    color-scheme: light;
+    --color-card: #ffffff;
+    --color-text-1: #111111;
+    --color-text-2: #444444;
+    --color-text-3: #363636;
+    --color-shadow: rgba(161, 177, 204, 0.22);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        color-scheme: light;
+        --color-card: #ffffff;
+        --color-text-1: #111111;
+        --color-text-2: #444444;
+        --color-text-3: #363636;
+        --color-shadow: rgba(161, 177, 204, 0.22);
+    }
+}
+
 /* 强制 Font Awesome 图标生效，覆盖主题自带的旧字体 */
 i.fa-solid {
     font-family: "Font Awesome 6 Free" !important;
@@ -25,15 +46,15 @@ i.fa-brands {
     padding-bottom: 35% !important; 
 }
 
-/* 3. 修复其他文章里“版权声明”板块在深色模式下的刺眼白底 */
+/* 3. 让版权声明板块在浅色主题下保持柔和 */
 .nexmoe-post-copyright {
-    background-color: rgba(255, 255, 255, 0.05) !important; /* 改为半透明暗色底 */
-    border-color: rgba(255, 255, 255, 0.1) !important;      /* 边框变暗 */
-    box-shadow: none !important;                            /* 去掉发光阴影 */
+    background-color: #f7f8fa !important;
+    border-color: rgba(17, 17, 17, 0.08) !important;
+    box-shadow: none !important;
 }
-/* 让版权块里的文字适配深色模式 */
+/* 让版权块里的文字适配浅色模式 */
 .nexmoe-post-copyright * {
-    color: var(--color-text-main) !important;
+    color: var(--color-text-2) !important;
 }
 /* ====================================================================
    Atom One Dark Theme for Highlight.js
